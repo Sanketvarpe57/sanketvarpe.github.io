@@ -1,0 +1,75 @@
+#include <stdio.h>
+#define MAX 5   
+
+int stack[MAX];
+int top = -1;
+
+// Function to push (add) a parcel
+void push(int parcel) {
+    if (top == MAX - 1) {
+        printf("\nStack Overflow! No more parcels can be added.\n");
+    } else {
+        top++;
+        stack[top] = parcel;
+        printf("Parcel %d added to stack.\n", parcel);
+    }
+}
+
+// Function to pop (remove) a parcel
+void pop() {
+    if (top == -1) {
+        printf("\nStack Underflow! No parcels to remove.\n");
+    } else {
+        printf("Parcel %d removed from stack.\n", stack[top]);
+        top--;
+    }
+}
+
+// Function to display all parcels in stack
+void display() {
+    if (top == -1) {
+        printf("\nNo parcels in stack.\n");
+    } else {
+        printf("\nCurrent Parcels in Stack (Top to Bottom):\n");
+        for (int i = top; i >= 0; i--) {
+            printf("Parcel %d\n", stack[i]);
+        }
+    }
+}
+
+// Main function
+int main() {
+    int choice, parcel;
+
+    printf("=== Post Office Parcel Handling System (LIFO) ===\n");
+
+    do {
+        printf("\n1. Add Parcel (Push)");
+        printf("\n2. Remove Parcel (Pop)");
+        printf("\n3. Display Parcels");
+        printf("\n4. Exit");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter Parcel ID (number): ");
+                scanf("%d", &parcel);
+                push(parcel);
+                break;
+            case 2:
+                pop();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                printf("\nExiting system. Thank you!\n");
+                break;
+            default:
+                printf("\nInvalid choice! Please try again.\n");
+        }
+    } while (choice != 4);
+
+    return 0;
+}

@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Define structure for a browser history node
+struct Node {
+    char url[100];
+    struct Node* next;
+};
+
+struct Node* top = NULL; // top of stack
+
+// Function to push (visit a new website)
+void push(char site[]) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    strcpy(newNode->url, site);
+    newNode->next = top;
+    top = newNode;
+    printf("Visited: %s\n", site);
+}
+
+// Function to pop (go back to previous website)
+void pop() {
+    if (top == NULL) {
+        printf("\nNo previous history (Stack Underflow)!\n");
+        return;
+    }
+    struct Node* temp = top;
+    printf("Going back from: %s\n", top->url);
+    top = top->next;
+    free(temp);
+}
+
+// Function to display browser history
+void display() {
+    if (top == NULL) {
+        printf("\nNo history available.\n");
+        return;
+    }
+
+    printf("\n--- Browser History (Most recent first) ---\n");
+    struct Node* temp = top;
+    while (temp != NULL) {
+        printf("%s\n", temp->url);
+        temp = temp->next;
+    }
+}
+
+int main() {
+    int choice;
+    char site[100];
+
+    printf("=== Browser History System using Dynamic Stack ===\n");
+
+    do {
+        printf("\n1. Visit New Site (Push)");
+        printf("\n2. Go Back (Pop)");
+        printf("\n3. Show History (Display)");
+        printf("\n4. Exit");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter site URL: ");
+                scanf("%s", site);
+                push(site);
+                break;
+            case 2:
+                pop();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                printf("\nExiting Browser History System.\n");
+                break;
+            default:
+                printf("\nInvalid choice! Try again.\n");
+        }
+    } while (choice != 4);
+
+    return 0;
+}

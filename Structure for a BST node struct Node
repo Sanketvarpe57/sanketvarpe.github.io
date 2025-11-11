@@ -1,0 +1,94 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure for a BST node
+struct Node {
+    int data;
+    struct Node *left, *right;
+};
+
+// Function to create a new node
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+// Function to insert a new node in BST
+struct Node* insert(struct Node* root, int value) {
+    if (root == NULL)
+        return createNode(value);
+
+    if (value < root->data)
+        root->left = insert(root->left, value);
+    else if (value > root->data)
+        root->right = insert(root->right, value);
+
+    return root;
+}
+
+// Function to find the height of BST
+int height(struct Node* root) {
+    if (root == NULL)
+        return -1; // Height of empty tree is -1
+    int leftHeight = height(root->left);
+    int rightHeight = height(root->right);
+    return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
+}
+
+// Function to find the depth of a given node
+int findDepth(struct Node* root, int key, int depth) {
+    if (root == NULL)
+        return -1; // Key not found
+
+    if (root->data == key)
+        return depth;
+
+    if (key < root->data)
+        return findDepth(root->left, key, depth + 1);
+    else
+        return findDepth(root->right, key, depth + 1);
+}
+
+// Inorder traversal for display
+void inorder(struct Node* root) {
+    if (root != NULL) {
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+
+int main() {
+    struct Node* root = NULL;
+    int n, value, key, result;
+
+    printf("=== Binary Search Tree Operations ===\n");
+    printf("Enter number of nodes to insert: ");
+    scanf("%d", &n);
+
+    printf("Enter %d values:\n", n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &value);
+        root = insert(root, value);
+    }
+
+    printf("\nInorder Traversal (Sorted BST): ");
+    inorder(root);
+
+    // Calculate height
+    printf("\n\nHeight of the BST: %d\n", height(root));
+
+    // Find depth of a given node
+    printf("Enter a node value to find its depth: ");
+    scanf("%d", &key);
+
+    result = findDepth(root, key, 0);
+    if (result != -1)
+        printf("Depth of node %d is: %d\n", key, result);
+    else
+        printf("Node %d not found in the tree.\n", key);
+
+    return 0;
+}

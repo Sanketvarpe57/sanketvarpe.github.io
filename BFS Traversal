@@ -1,0 +1,79 @@
+#include <stdio.h>
+#define MAX 10
+
+int adj[MAX][MAX];   // Adjacency matrix
+int visited[MAX];    // Visited array
+int queue[MAX];      // For BFS
+int front = -1, rear = -1;
+
+// BFS Traversal
+void BFS(int start, int n) {
+    int i, current;
+
+    for (i = 0; i < n; i++)
+        visited[i] = 0;
+
+    front = rear = 0;
+    queue[rear] = start;
+    visited[start] = 1;
+
+    printf("\nBFS Traversal (Campus Path): ");
+
+    while (front <= rear) {
+        current = queue[front++];
+        printf("Building %d ", current + 1);
+
+        for (i = 0; i < n; i++) {
+            if (adj[current][i] == 1 && visited[i] == 0) {
+                queue[++rear] = i;
+                visited[i] = 1;
+            }
+        }
+    }
+    printf("\n");
+}
+
+// DFS Traversal (recursive)
+void DFS(int v, int n) {
+    int i;
+    visited[v] = 1;
+    printf("Building %d ", v + 1);
+
+    for (i = 0; i < n; i++) {
+        if (adj[v][i] == 1 && visited[i] == 0)
+            DFS(i, n);
+    }
+}
+
+int main() {
+    int n, i, j, start;
+
+    printf("=== Campus Navigation System (Graph Traversal) ===\n");
+    printf("Enter number of buildings (vertices): ");
+    scanf("%d", &n);
+
+    printf("\nEnter adjacency matrix (1 for path, 0 for no path):\n");
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++) {
+            printf("Path between Building %d and Building %d: ", i + 1, j + 1);
+            scanf("%d", &adj[i][j]);
+        }
+    }
+
+    printf("\nEnter starting building number (1 - %d): ", n);
+    scanf("%d", &start);
+    start--; // Convert to 0-indexed
+
+    // BFS Traversal
+    BFS(start, n);
+
+    // DFS Traversal
+    for (i = 0; i < n; i++)
+        visited[i] = 0;
+
+    printf("\nDFS Traversal (Campus Path): ");
+    DFS(start, n);
+    printf("\n");
+
+    return 0;
+}

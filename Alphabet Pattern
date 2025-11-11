@@ -1,0 +1,66 @@
+#include <stdio.h>
+
+void starPattern(int n) {
+    printf("\n--- Star Pattern ---\n");
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= i; j++)
+            printf("* ");
+        printf("\n");
+    }
+}
+
+void numberPattern(int n) {
+    printf("\n--- Number Pattern ---\n");
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= i; j++)
+            printf("%d ", j);
+        printf("\n");
+    }
+}
+
+void alphabetPattern(int n) {
+    printf("\n--- Alphabet Pattern ---\n");
+    for (int i = 1; i <= n; i++) {
+        char ch = 'A';
+        for (int j = 1; j <= i; j++)
+            printf("%c ", ch++);
+        printf("\n");
+    }
+}
+
+int main() {
+    int n, choice;
+
+    printf("=== Pattern Display Program ===\n");
+    printf("Enter number of rows: ");
+    scanf("%d", &n);
+
+    do {
+        printf("\nChoose pattern type:");
+        printf("\n1. Star Pattern");
+        printf("\n2. Number Pattern");
+        printf("\n3. Alphabet Pattern");
+        printf("\n4. Exit");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                starPattern(n);
+                break;
+            case 2:
+                numberPattern(n);
+                break;
+            case 3:
+                alphabetPattern(n);
+                break;
+            case 4:
+                printf("\nExiting program...\n");
+                break;
+            default:
+                printf("\nInvalid choice! Try again.\n");
+        }
+    } while (choice != 4);
+
+    return 0;
+}

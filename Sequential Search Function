@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <string.h>
+
+// Sequential Search Function
+int sequentialSearch(char contacts[][50], int n, char key[], int *comparisons) {
+    *comparisons = 0;
+    for (int i = 0; i < n; i++) {
+        (*comparisons)++;
+        if (strcmp(contacts[i], key) == 0)
+            return i; // Found
+    }
+    return -1; // Not found
+}
+
+// Binary Search Function
+int binarySearch(char contacts[][50], int n, char key[], int *comparisons) {
+    int low = 0, high = n - 1, mid;
+    *comparisons = 0;
+
+    while (low <= high) {
+        mid = (low + high) / 2;
+        (*comparisons)++;
+
+        int result = strcmp(contacts[mid], key);
+        if (result == 0)
+            return mid; // Found
+        else if (result < 0)
+            low = mid + 1;
+        else
+            high = mid - 1;
+    }
+    return -1; // Not found
+}
+
+int main() {
+    char contacts[10][50] = {
+        "Aarav", "Diya", "Ishaan", "Kavya", "Mira",
+        "Neel", "Riya", "Samar", "Tara", "Vihaan"
+    };
+    int n = 10;
+    char key[50];
+    int pos, seqComp, binComp;
+
+    printf("=== Contact Search System ===\n");
+    printf("Contacts List (Sorted):\n");
+    for (int i = 0; i < n; i++)
+        printf("%d. %s\n", i + 1, contacts[i]);
+
+    printf("\nEnter contact name to search: ");
+    scanf("%s", key);
+
+    // Sequential Search
+    pos = sequentialSearch(contacts, n, key, &seqComp);
+    if (pos != -1)
+        printf("\n[Sequential Search] Contact '%s' found at position %d\n", key, pos + 1);
+    else
+        printf("\n[Sequential Search] Contact '%s' not found.\n", key);
+    printf("Comparisons: %d\n", seqComp);
+
+    // Binary Search
+    pos = binarySearch(contacts, n, key, &binComp);
+    if (pos != -1)
+        printf("\n[Binary Search] Contact '%s' found at position %d\n", key, pos + 1);
+    else
+        printf("\n[Binary Search] Contact '%s' not found.\n", key);
+    printf("Comparisons: %d\n", binComp);
+
+    // Efficiency Comparison
+    printf("\n--- Efficiency Comparison ---\n");
+    printf("Sequential Search Comparisons: %d\n", seqComp);
+    printf("Binary Search Comparisons: %d\n", binComp);
+
+    if (seqComp > binComp)
+        printf("✅ Binary Search is more efficient.\n");
+    else if (seqComp < binComp)
+        printf("✅ Sequential Search is more efficient (rare case).\n");
+    else
+        printf("⚖️ Both searches performed equally.\n");
+
+    return 0;
+}

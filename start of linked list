@@ -1,0 +1,169 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure for a node
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* head = NULL;  // start of linked list
+
+// Function to create linked list (append nodes)
+void create() {
+    int n, value;
+    struct Node *newNode, *temp;
+
+    printf("\nEnter number of nodes: ");
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        newNode = (struct Node*)malloc(sizeof(struct Node));
+        printf("Enter value for node %d: ", i + 1);
+        scanf("%d", &value);
+        newNode->data = value;
+        newNode->next = NULL;
+
+        if (head == NULL)
+            head = newNode;
+        else {
+            temp = head;
+            while (temp->next != NULL)
+                temp = temp->next;
+            temp->next = newNode;
+        }
+    }
+    printf("Linked list created successfully!\n");
+}
+
+// Function to insert a new node at a specific position
+void insert() {
+    int pos, value;
+    struct Node *newNode, *temp;
+    newNode = (struct Node*)malloc(sizeof(struct Node));
+
+    printf("Enter value to insert: ");
+    scanf("%d", &value);
+    newNode->data = value;
+    newNode->next = NULL;
+
+    printf("Enter position to insert (1 for start): ");
+    scanf("%d", &pos);
+
+    if (pos == 1) {
+        newNode->next = head;
+        head = newNode;
+    } else {
+        temp = head;
+        for (int i = 1; i < pos - 1 && temp != NULL; i++)
+            temp = temp->next;
+
+        if (temp == NULL)
+            printf("Invalid position!\n");
+        else {
+            newNode->next = temp->next;
+            temp->next = newNode;
+        }
+    }
+    printf("Node inserted successfully!\n");
+}
+
+// Function to delete a node by value
+void deleteNode() {
+    int value;
+    struct Node *temp = head, *prev = NULL;
+
+    if (head == NULL) {
+        printf("List is empty!\n");
+        return;
+    }
+
+    printf("Enter value to delete: ");
+    scanf("%d", &value);
+
+    // If head node holds the value
+    if (head->data == value) {
+        head = head->next;
+        free(temp);
+        printf("Node with value %d deleted.\n", value);
+        return;
+    }
+
+    // Search for the node to delete
+    while (temp != NULL && temp->data != value) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == NULL)
+        printf("Value not found!\n");
+    else {
+        prev->next = temp->next;
+        free(temp);
+        printf("Node with value %d deleted.\n", value);
+    }
+}
+
+// Function to display all nodes
+void display() {
+    struct Node* temp = head;
+
+    if (temp == NULL) {
+        printf("List is empty!\n");
+        return;
+    }
+
+    printf("\nLinked List Elements: ");
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+// Function to search for a value
+void search() {
+    int value, pos = 1;
+    struct Node* temp = head;
+
+    printf("Enter value to search: ");
+    scanf("%d", &value);
+
+    while (temp != NULL) {
+        if (temp->data == value) {
+            printf("Value %d found at position %d.\n", value, pos);
+            return;
+        }
+        temp = temp->next;
+        pos++;
+    }
+    printf("Value not found in the list.\n");
+}
+
+int main() {
+    int choice;
+
+    do {
+        printf("\n===== Singly Linked List Menu =====");
+        printf("\n1. Create List");
+        printf("\n2. Insert Node");
+        printf("\n3. Delete Node");
+        printf("\n4. Display List");
+        printf("\n5. Search Node");
+        printf("\n6. Exit");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: create(); break;
+            case 2: insert(); break;
+            case 3: deleteNode(); break;
+            case 4: display(); break;
+            case 5: search(); break;
+            case 6: printf("Exiting program...\n"); break;
+            default: printf("Invalid choice! Try again.\n");
+        }
+    } while (choice != 6);
+
+    return 0;
+}
